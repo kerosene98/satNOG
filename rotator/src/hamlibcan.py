@@ -20,8 +20,9 @@ class MyTCPHandler(socketserver.StreamRequestHandler):
         # self.request is the TCP socket connected to the client
         while(1):
             try:
+                print('LOOP')
                 self.data = self.rfile.readline().strip()
-
+                print(repr(self.data))
                 command = self.data.decode('utf-8')
                 if command == '\dump_state':
                     rig_capps = [
@@ -45,68 +46,28 @@ class MyTCPHandler(socketserver.StreamRequestHandler):
                         # End of RX frequency ranges. 
                         "0 0 0 0 0 0 0\n",
                         # End of TX frequency ranges. The Gqrx is reciver only. 
-                        "0 0 0 0 0 0 0\n",
-                        # Tuning steps: modes, tuning_step 
-                        "0xef 1\n",
-                        "0xef 0\n",
-                        # End of tuning steps 
-                        "0 0\n",
-                        # Filter sizes: modes, width 
-                        "0x82 500\n",    # CW | CWR normal 
-                        "0x82 200\n",    # CW | CWR narrow 
-                        "0x82 2000\n",   # CW | CWR wide 
-                        "0x21 10000\n",  # AM | FM normal 
-                        "0x21 5000\n",   # AM | FM narrow 
-                        "0x21 20000\n",  # AM | FM wide 
-                        "0x0c 2700\n",   # SSB normal 
-                        "0x0c 1400\n",   # SSB narrow 
-                        "0x0c 3900\n",   # SSB wide 
-                        "0x40 160000\n", # WFM normal 
-                        "0x40 120000\n", # WFM narrow 
-                        "0x40 200000\n", # WFM wide 
-                        # End of filter sizes  
-                        "0 0\n",
-                        # max_rit  
-                        "0\n",
-                        # max_xit 
-                        "0\n",
-                        # max_ifshift 
-                        "0\n",
-                        # Announces (bit field list) 
-                        "0\n", # RIG_ANN_NONE 
-                        # Preamp list in dB, 0 terminated 
-                        "0\n",
-                        # Attenuator list in dB, 0 terminated 
-                        "0\n",
-                        # Bit field list of get functions 
-                        "0\n", # RIG_FUNC_NONE 
-                        # Bit field list of set functions 
-                        "0\n", # RIG_FUNC_NONE 
-                        # Bit field list of get level 
-                        "0x40000020\n", # RIG_LEVEL_SQL | RIG_LEVEL_STRENGTH 
-                        # Bit field list of set level 
-                        "0x20\n",       # RIG_LEVEL_SQL 
-                        # Bit field list of get parm 
-                        "0\n", # RIG_PARM_NONE 
-                        # Bit field list of set parm 
-                        "0\n", # RIG_PARM_NONE )
+                        "0 0 0 0 0 0 0\n"
                     ]
-                    
                     self.request.sendall(''.join(rig_capps).encode('ascii'))
+                    print('sent response: Magic numbers :/')
                 elif command == 'p':
+                    print('received command: ' + command)
                     data = read_sensors()
                     self.request.sendall(data)
+                    print('sent response: ' + repr(data))
                 elif command[0] == 'P':
                     _, az, el = command.split(' ')
                     set_position(az, el)
                     self.request.sendall('RPRT 0\n'.encode('ascii'))
+                    print('sent response: RPRT 0\n' )
                 else:
-                    print('unknown request: ' + self.data)
                     self.request.sendall('RPRT -4\n'.encode('ascii'))
+                    print('unknown command: ' + str(self.data))
+                    print('sent response: RPRT -4\n')
             except:
                 break
 if __name__ == "__main__":
-    HOST, PORT = "localhost", 4533
+    HOST, PORT = "localhost", 4333
     server = socketserver.TCPServer((HOST, PORT), MyTCPHandler, bind_and_activate=False)
     server.allow_reuse_address=True
     server.server_bind()
