@@ -1,0 +1,8 @@
+prefix=/home/dev/git/satNOG/rotator/ros_simulator/devel
+
+Name: rotator_gazebo
+Description: Description of rotator_gazebo
+Version: 0.0.0
+Cflags: 
+Libs: -L/home/dev/git/satNOG/rotator/ros_simulator/devel/lib 
+Requires: 
