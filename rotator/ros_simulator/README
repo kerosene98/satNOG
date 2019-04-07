@@ -1,0 +1,15 @@
+To run
+go to ros_simulator directory
+source devel/setup.bash
+roslaunch rotator_gazebo rotator.launch
+open another terminal
+go to ros_simulator directory
+source devel/setup.bash
+roslaunch rotator_control rotator_control.launch
+
+You should see a 3D world with the rotator
+
+To control the rotator with ros you can open another terminal and issue these commands
+rostopic pub -1 /rotator/pan_joint_position_controller/command std_msgs/Float64 "data: 0"
+
+rostopic pub -1 /rotator/tilt_joint_position_controller/command std_msgs/Float64 "data: -10"
