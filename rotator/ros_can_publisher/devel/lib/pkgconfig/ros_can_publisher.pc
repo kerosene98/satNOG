@@ -1,0 +1,8 @@
+prefix=/home/dev/git/satNOG/rotator/ros_can_publisher/devel
+
+Name: ros_can_publisher
+Description: Description of ros_can_publisher
+Version: 0.0.0
+Cflags: 
+Libs: -L/home/dev/git/satNOG/rotator/ros_can_publisher/devel/lib 
+Requires: 

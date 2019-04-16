@@ -1,0 +1,2 @@
+ros_can_publisher
+-DCATKIN_DEVEL_PREFIX=/home/dev/git/satNOG/rotator/ros_can_publisher/devel -DCMAKE_INSTALL_PREFIX=/home/dev/git/satNOG/rotator/ros_can_publisher/install -G Unix Makefiles
